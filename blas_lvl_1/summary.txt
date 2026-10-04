@@ -1,0 +1,69 @@
+Geometric mean of t_array / t_loop   (>1 = array syntax slower)
+
+config                                       n=1000    n=50000  n=5000000      all
+gfortran -O2                                  0.992      0.998      0.995    0.995
+gfortran -O3 -march=native                    0.976      0.986      0.998    0.987
+gfortran -O3 -march=native -ffast-math        0.979      0.987      0.986    0.984
+flang19 -O2                                   1.031      1.103      1.959    1.306
+flang19 -O3 -march=native                     0.938      1.060      1.693    1.190
+flang19 -O3 -march=native -ffast-math         1.068      1.174      2.071    1.374
+
+Per-kernel ratio t_array/t_loop at n=1000 (L1-resident)
+
+kernel        gf -O2 gf -O3 nat    gf fast     fl -O2 fl -O3 nat    fl fast
+copy            1.20       1.00       0.99       0.98       1.02       1.00
+scal            0.96       1.00       0.96       1.03       0.98       0.99
+axpy            1.00       0.97       1.00       1.01       1.01       1.01
+axpby           1.02       0.98       1.00       1.00       1.00       1.00
+waxpby          1.02       0.96       0.99       1.00       1.01       1.00
+dot             1.01       1.00       1.02       1.29       0.62       2.00
+asum            0.99       0.96       0.98       1.24       1.23       2.26
+nrm2            1.03       1.01       0.99       1.22       0.65       2.53
+iamax           0.96       1.01       1.00       1.10       2.76       1.11
+axpy_s2         0.82       0.85       0.84       0.43       0.45       0.46
+dot_s2          0.96       1.00       1.00       1.48       0.79       0.35
+
+Absolute loop-version time at n=1000, ns/call
+
+kernel        gf -O2 gf -O3 nat    gf fast     fl -O2 fl -O3 nat    fl fast
+copy              34         40         43         97         97        122
+scal             284        122        101         98        123         99
+axpy             267        117        149        133        106        106
+axpby            334        133        178        160        166        133
+waxpby           340        180        134        167        123        158
+dot              473        556        141        462        925         87
+asum             577        468         98        461        467         71
+nrm2             467        453        121        481        883         65
+iamax           1210        977       1158       1000        996        951
+axpy_s2          543        450        374        779        554        711
+dot_s2           501        476        280        482        940       1172
+
+Per-kernel ratio at n=50000
+
+kernel        gf -O2 gf -O3 nat    gf fast     fl -O2 fl -O3 nat    fl fast
+copy            1.01       1.03       1.02       1.00       1.00       0.97
+scal            1.00       0.98       0.91       1.00       1.01       1.01
+axpy            1.14       1.02       1.01       1.02       1.03       1.00
+axpby           0.93       1.01       1.00       1.01       1.01       0.98
+waxpby          1.00       1.01       1.01       1.09       1.02       0.99
+dot             1.00       1.00       1.00       1.34       0.72       1.49
+asum            1.00       1.00       1.01       1.32       1.56       2.35
+nrm2            1.01       1.01       1.00       1.33       0.75       3.25
+iamax           1.00       0.99       1.01       1.07       2.82       1.19
+axpy_s2         0.93       0.84       0.84       0.55       0.67       0.67
+dot_s2          0.97       0.97       1.05       1.93       1.09       0.69
+
+Per-kernel ratio at n=5000000
+
+kernel        gf -O2 gf -O3 nat    gf fast     fl -O2 fl -O3 nat    fl fast
+copy            1.00       1.00       1.00       0.99       0.95       0.99
+scal            1.01       1.00       1.00       1.01       0.99       1.02
+axpy            0.97       1.01       0.99       1.00       1.02       0.98
+axpby           0.99       1.01       1.00       1.01       0.99       0.94
+waxpby          0.99       0.95       0.98       1.00       1.01       1.00
+dot             1.01       1.01       1.00       5.76       3.45       4.84
+asum            1.00       1.00       1.00       4.70       4.54       7.98
+nrm2            1.02       1.01       0.85       5.82       2.63       8.65
+iamax           0.96       1.00       1.01       3.84       2.99       3.20
+axpy_s2         1.00       1.01       1.01       0.97       0.96       1.00
+dot_s2          0.99       0.99       1.02       2.77       2.91       3.00
