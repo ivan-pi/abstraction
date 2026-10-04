@@ -1,0 +1,182 @@
+Ratio t_variant / t_f77, geometric means.  1.00 = no abstraction penalty.
+Geomeans exclude variants whose result is not bitwise identical to F77
+(they did different arithmetic):
+  gf -O2       gemv_t/matmul_tr, gemv_t/matmul_vm
+  gf -O3 nat   gemv_t/matmul_tr, gemv_t/matmul_vm
+  fl -O2       none
+  fl -O3 nat   none
+
+Overall, per size
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+n=8                           1.15        1.15        2.13        1.63
+n=32                          1.21        1.20        1.69        1.68
+n=256                         1.30        1.25        1.57        1.46
+n=2000                        1.16        1.24        1.59        1.59
+all sizes                     1.20        1.21        1.73        1.59
+
+Per language facility, all kernels and sizes
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+array sections                1.09        0.99        1.12        1.11
+assumed shape                 1.49        1.10        1.89        1.12
+intrinsics                    1.60        1.91        2.75        2.52
+derived types                 1.05        1.04        1.25        1.20
+do concurrent                 0.95        1.00        1.92        1.63
+
+Per language facility, excluding ger/spread
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+array sections                1.09        0.99        1.12        1.11
+assumed shape                 1.49        1.10        1.89        1.12
+intrinsics                    1.10        1.12        1.53        1.41
+derived types                 1.05        1.04        1.25        1.20
+do concurrent                 0.95        1.00        1.92        1.63
+
+Per variant, geometric mean over all sizes  (* = not bitwise for some compiler)
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+gemv_n/arrsec                 1.22        1.02        1.02        0.99
+gemv_n/ashape                 1.49        1.10        1.89        1.12
+gemv_n/matmul                 1.03        1.29        1.50        1.49
+gemv_n/dtype                  1.02        1.05        1.10        0.93
+gemv_n/tbp                    1.18        1.03        1.05        0.91
+gemv_n/pdt                    1.00        1.07         n/a         n/a
+gemv_t/sum                    1.02        1.00        2.25        2.00
+gemv_t/dotprod                1.05        1.01        1.06        0.98
+gemv_t/matmul_vm*             0.57        0.62        2.11        1.80
+gemv_t/matmul_tr*             0.47        0.54        1.47        1.36
+ger/arrsec                    0.82        1.00        1.06        0.95
+ger/dc_ji                     0.95        1.00        1.02        1.00
+ger/dc_ij                     0.96        1.01        3.65        2.66
+ger/spread                    7.10       16.03       93.51       81.38
+trsv/arrsec                   1.14        0.84        0.98        1.00
+trsv/arrsec_tmp               1.15        0.92        0.98        0.98
+symv/arrsec_sum               1.31        1.21        2.16        2.00
+symv/dotprod                  1.32        1.20        1.15        1.12
+tpmv/arrsec                   0.97        0.97        0.90        1.03
+tpmv/accessor                 1.01        0.99        1.70        2.04
+
+Per variant, n=8
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+gemv_n/arrsec                 1.25        1.03        1.04        1.01
+gemv_n/ashape                 1.45        1.32        2.22        1.15
+gemv_n/matmul                 1.04        1.18        3.87        1.90
+gemv_n/dtype                  0.95        0.94        1.26        0.85
+gemv_n/tbp                    1.23        0.96        1.27        0.87
+gemv_n/pdt                    0.97        0.97         n/a         n/a
+gemv_t/sum                    1.10        0.98        4.31        4.60
+gemv_t/dotprod                1.05        0.99        1.00        0.90
+gemv_t/matmul_vm              1.06        1.20        4.26        3.68
+gemv_t/matmul_tr              0.82        1.27        4.04        3.46
+ger/arrsec                    0.83        1.02        1.23        0.91
+ger/dc_ji                     1.04        1.00        1.08        1.01
+ger/dc_ij                     1.01        1.07        2.87        0.68
+ger/spread                    4.17        8.46       94.53       27.47
+trsv/arrsec                   1.13        0.77        0.95        1.05
+trsv/arrsec_tmp               1.14        0.91        0.93        1.00
+symv/arrsec_sum               0.99        1.12        4.05        3.98
+symv/dotprod                  1.00        1.12        1.14        1.38
+tpmv/arrsec                   1.07        1.06        0.97        1.09
+tpmv/accessor                 1.05        1.04        1.11        1.23
+
+Per variant, n=32
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+gemv_n/arrsec                 1.85        1.03        1.00        1.05
+gemv_n/ashape                 2.28        1.10        2.25        1.41
+gemv_n/matmul                 1.25        1.55        1.26        1.79
+gemv_n/dtype                  1.21        1.27        1.14        1.07
+gemv_n/tbp                    1.84        1.25        1.12        1.10
+gemv_n/pdt                    1.01        1.28         n/a         n/a
+gemv_t/sum                    0.98        1.00        1.99        1.61
+gemv_t/dotprod                0.99        1.04        0.98        1.02
+gemv_t/matmul_vm              0.63        0.78        1.55        1.23
+gemv_t/matmul_tr              0.33        0.39        1.25        1.11
+ger/arrsec                    0.62        1.02        1.08        0.99
+ger/dc_ji                     1.00        1.02        1.05        1.03
+ger/dc_ij                     1.02        1.04        3.35        3.25
+ger/spread                    1.74        6.92       94.84      153.45
+trsv/arrsec                   1.38        0.87        1.10        1.08
+trsv/arrsec_tmp               1.40        0.85        1.11        1.08
+symv/arrsec_sum               1.13        1.16        1.95        1.99
+symv/dotprod                  1.14        1.15        0.97        0.83
+tpmv/arrsec                   0.97        0.95        0.84        1.23
+tpmv/accessor                 1.06        0.99        2.14        2.20
+
+Per variant, n=256
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+gemv_n/arrsec                 1.05        1.02        1.05        0.99
+gemv_n/ashape                 1.43        1.00        1.98        1.02
+gemv_n/matmul                 1.00        1.33        1.07        1.27
+gemv_n/dtype                  1.01        1.00        1.00        0.79
+gemv_n/tbp                    1.06        1.00        0.97        0.78
+gemv_n/pdt                    1.08        1.00         n/a         n/a
+gemv_t/sum                    0.99        0.99        1.63        1.60
+gemv_t/dotprod                1.04        0.99        1.04        1.01
+gemv_t/matmul_vm              0.23        0.24        0.89        0.84
+gemv_t/matmul_tr              0.31        0.31        0.93        0.94
+ger/arrsec                    0.99        0.98        1.05        0.96
+ger/dc_ji                     0.98        1.01        1.04        1.04
+ger/dc_ij                     0.99        0.98        3.83        3.55
+ger/spread                   18.14       38.69      129.48      122.88
+trsv/arrsec                   1.05        0.84        0.91        0.87
+trsv/arrsec_tmp               1.06        1.01        0.93        0.86
+symv/arrsec_sum               1.77        1.23        1.72        1.35
+symv/dotprod                  1.78        1.22        1.20        1.06
+tpmv/arrsec                   0.99        0.91        0.86        0.90
+tpmv/accessor                 1.02        0.91        2.20        3.01
+
+Per variant, n=2000
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+gemv_n/arrsec                 0.89        1.00        0.99        0.93
+gemv_n/ashape                 1.05        1.00        1.29        0.94
+gemv_n/matmul                 0.88        1.14        0.98        1.14
+gemv_n/dtype                  0.94        1.03        1.04        1.05
+gemv_n/tbp                    0.82        0.95        0.88        0.93
+gemv_n/pdt                    0.93        1.07         n/a         n/a
+gemv_t/sum                    1.00        1.03        1.86        1.35
+gemv_t/dotprod                1.14        1.02        1.24        0.99
+gemv_t/matmul_vm              0.67        0.64        3.40        2.77
+gemv_t/matmul_tr              0.59        0.55        1.00        0.94
+ger/arrsec                    0.90        0.95        0.91        0.95
+ger/dc_ji                     0.80        0.96        0.90        0.95
+ger/dc_ij                     0.83        0.95        4.80        6.41
+ger/spread                   19.39       29.15       65.86       84.69
+trsv/arrsec                   1.01        0.90        0.98        1.00
+trsv/arrsec_tmp               1.03        0.92        0.96        1.01
+symv/arrsec_sum               1.49        1.33        1.59        1.51
+symv/dotprod                  1.50        1.34        1.32        1.28
+tpmv/arrsec                   0.87        0.98        0.95        0.94
+tpmv/accessor                 0.94        1.04        1.61        2.14
+
+F77 baseline time, ns/call
+
+                            gf -O2  gf -O3 nat      fl -O2  fl -O3 nat
+gemv_n n=8                      30          14          17          32
+gemv_n n=32                    350          97         182         121
+gemv_n n=256                 21220        8845       11790        9032
+gemv_n n=2000              2061880     1251310     1536940     1465480
+gemv_t n=8                      26          17          17          19
+gemv_t n=32                    307         260         306         277
+gemv_t n=256                 26285       25253       27472       27967
+gemv_t n=2000              2259790     2187880     2236890     2908740
+ger n=8                         34          12          14          48
+ger n=32                       757         120         155         109
+ger n=256                    21664       11311       10524       10181
+ger n=2000                 1999280     1321000     1810130     1224530
+trsv n=8                        24          62          67          73
+trsv n=32                      214         302         217         286
+trsv n=256                   11578        7893        9330        6126
+trsv n=2000                1002940      739415      783548      834790
+symv n=8                        26          29          24          25
+symv n=32                      358         183         235         314
+symv n=256                   16051       13893       15777       16348
+symv n=2000                1275260     1526290     1370860     1271640
+tpmv n=8                        22          33          22          22
+tpmv n=32                      180         118         132         132
+tpmv n=256                   11428        6702        7532        7015
+tpmv n=2000                 957029      703537      907336      585216
